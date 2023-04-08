@@ -8,7 +8,7 @@ const SideBar = () => (
   <section id="sidebar">
     <section id="intro">
       <Link to="/" className="logo">
-        <img src={`${PUBLIC_URL}/images/mygif.gif`} alt="" />
+        <img src={`${PUBLIC_URL}/images/avatar.jpg`} alt="" />
       </Link>
     </section>
 
