@@ -56,11 +56,11 @@ Ask me in person for other stories that I'm hesitant to share with the internet.
 
 # Geography
 
-- I am originally from Suwalki, Poland, and have since lived in Grassland, Nibro, Edmonton, Warsaw, Stockholm, and Calgary.
+- I am originally from Suwalki - Poland and have since lived in Edmonton, Warsaw, Stockholm and currently living in Calgary with a deep sense of wanderlust to explore more of Canada.
 
 - I've visited approximately 20 countries, some of which I've forgotten, and many of which I'd like to revisit. These include Canada, France, Austria, Germany, Italy, Greece, Romania, Bulgaria, Croatia, Bosnia and Herzegovina, Serbia, Montenegro, Sweden, Norway, Denmark, Netherlands and more.
 
-- Places on my bucket list: Yukon, Ottawa, Quebec, Alaska, Hawaii, New Zealand, Iceland, and Chile.
+- Next on my bucket list: Vancouver Island, Yukon, Alaska, Hawaii, New Zealand, Iceland, and Chile.
 
 # Fun Facts
 
