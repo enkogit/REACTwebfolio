@@ -31,7 +31,7 @@ Since 2018, I have been based in Calgary, where I've learned to build teams, man
 
 - At 16, I received my first copy of Ubuntu Linux in the mail—tough love.
 
-- Between the ages of 16 and 20 I travelled a lot, I was completly broke but volunteering, couchsurfing and hitchhiking kept me moving. Got mugged. Slept under the cover of the stars. Made life-long relationships.
+- Between the ages of 16 and 19 I travelled a lot, completly broke but volunteering, couchsurfing and hitchhiking kept me moving. Slept few nights under the cover of the stars. Made life-long relationships.
 
 - In 2013, I enrolled in electrical engineering, where I had the opportunity to dive deep into the world of spinning electromagnetic fields, control systems, computer science, and more. I authored a scientific paper outlining guidelines for designing a self-sufficient renewable power plant with days of autonomy. I also participated in international student exchange programs, where we learned how to design and develop maximum power point tracking (MPPT) inverters.
 
