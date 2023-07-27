@@ -12,12 +12,12 @@ import degrees from '../data/resume/degrees';
 import positions from '../data/resume/positions';
 import { skills, categories } from '../data/resume/skills';
 
-const sections = [
-  'Education',
-  'Experience',
-  'Skills',
-  'References',
-];
+// const sections = [
+//   'Education',
+//   'Experience',
+//   'Skills',
+//   'References',
+// ];
 
 const Resume = () => (
   <Main
@@ -28,13 +28,12 @@ const Resume = () => (
       <header>
         <div className="title">
           <h2><Link to="resume">Resume</Link></h2>
-          <div className="link-container">
+          {/* <div className="link-container">
             {sections.map((sec) => (
               <h4 key={sec}>
                 <a href={`#${sec.toLowerCase()}`}>{sec}</a>
               </h4>))}
-          </div>
-
+          </div> */}
         </div>
       </header>
       <Education data={degrees} />

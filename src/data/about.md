@@ -5,25 +5,21 @@ Ever since I can remember, I've been fascinated by the power of electrical engin
 
 # Currently
 
-Since 2018, I have been based in Calgary, where I've learned to build teams, manage people and projects, shape culture, develop relationships with customers, sell and support enterprise products, and create online models using cutting-edge technologies. My primary role is as a systems integrator, but my experience extends across the stack.
+Since 2018, I have been based in Calgary, where I've learned to build teams, manage people and projects, shape culture, develop relationships with customers, sell and support enterprise products, and create online models using cutting-edge technologies. My primary role is as a SCADA / systems integrator, but my experience extends across the stack.
 
 # Some history
-
-- At 4, I was gifted a walkie-talkie, which I opened up with a stone as soon as the batteries died to see what was inside.
 
 - At 5, I received an RC vehicle, which I also broke apart as soon as the batteries died to explore its inner workings.
 
 - At 6, I was given a toolbox, leading to my first attempts at home renovations and device repairs.
 
-- In the winter of 2000, a skiing accident left me bedridden for several months. I used my insurance payout to buy a PS1 — Crash Bandicoot did the running for me.
+- In the winter of 2000, a skiing accident left me bedridden for several months. I used my insurance payout to buy a PS1 — Crash Bandicoot did the running for me. Soon after I discovered a way to bypass the authentication check on my PS1 by quickly swapping the Crash disk after the initial boot for any other burned game. My first hack.
 
-- In the spring of 2000, I discovered a way to bypass the authentication check on my PS1 by quickly swapping the Crash disk after the initial boot for any other game, which allowed me to play backed-up game disks like GTA 2, where I learned life ain't so pretty. 
-
-- At 9, my parents moved to a farm in Canada. With only a Game Boy Color to entertain me, I soon lost interest and took up activities like quading, snowmobiling, hunting small animals, building treehouses and lookouts, and creating fixed-wing prototypes (inspired by a neighbor who had a plane parked outside his house). I also learned to drive real-life machinery, tractors, and grain trucks. Best time ever.
+- At 9, my parents moved to a farm in Canada. With only a Game Boy Color to entertain meat first I soon lost interest in it and took up activities like quading, snowmobiling, hunting, building treehouses and lookouts, and creating my first fixed-wing prototypes (inspired by a neighbor who had a cesna parked outside his house). I also learned to drive real-life machinery, tractors, and grain trucks. Best.time.ever.
 
 - At 13, my parents moved back to a city in Poland, where I got my first 256kb/s internet connection which was nice.
 
-- My Polish language skills lagged behind my peers, so I befriended the quiet kid in class, a secret computer wizard eager to show off his skills. At 14, I learned how to set up websites, forums, and trojans.
+- My Polish language skills lagged behind my peers, so I befriended a quiet kid in class, a computer genius who humbly showed off his skills. At 14, I learned how websites, forums, and hacks work.
 
 - At 14, I created and managed my classroom's social webpage and discussion forum for exchanging notes; two other grades joined (pre-Facebook era).
 
@@ -31,27 +27,27 @@ Since 2018, I have been based in Calgary, where I've learned to build teams, man
 
 - At 16, I received my first copy of Ubuntu Linux in the mail—tough love.
 
-- Between the ages of 16 and 19 I travelled a lot, completly broke but volunteering, couchsurfing and hitchhiking kept me moving. Slept few nights under the cover of the stars. Made life-long relationships.
+- Between the ages of 16 and 19 I travelled a LOT across Europe, completly broke but volunteering, couchsurfing and hitchhiking kept me moving. Slept few nights under the cover of the stars volunatarily and involuntarliy. During this period, I experienced falling in love and formed enduring relationships. All in all, it was the most enriching and worthwhile adventures I've ever been on.
 
-- In 2013, I enrolled in electrical engineering, where I had the opportunity to dive deep into the world of spinning electromagnetic fields, control systems, computer science, and more. I authored a scientific paper outlining guidelines for designing a self-sufficient renewable power plant with days of autonomy. I also participated in international student exchange programs, where we learned how to design and develop maximum power point tracking (MPPT) inverters.
+- In 2013, I enrolled in electrical engineering, where I had the opportunity to dive deep into the world of engineering: spinning electromagnetic fields, control systems, power generation, computer science, and more. I authored a scientific paper outlining guidelines for designing a self-sufficient renewable solar plant with days of autonomy. PEN tested various systems. Simulated a grid connected wind turbine with energy storge and also participated in international student exchange programs, where we learned how to design and develop maximum power point tracking (MPPT) inverters.
 
-- In 2018, I graduated with a Bachelor's degree and began my full-time career as a System Integration Engineer at an ICS and SCADA company, where I gained hands-on experience at all stack levels.
+- In 2018, I graduated with a Bachelor's degree and began my full-time career as a System Integration / SCADA Engineer at an automation company in Canada, where I gained hands-on experience at all stack levels.
 
 Ask me in person for other stories that I'm hesitant to share with the internet.
 
 # Interests
 
-- Running, Hiking, Cycling, Snowboarding, Hockey.
+- Running, Hiking, Cycling, Snowboarding, Hockey, Sailing, Flying, Motor Racing.
 
-- Sailing, Flying, Motor Racing.
+- Science, Power Engineering, Space.
 
-- Science, Engineering, Space Exploration.
+- Computers, Reverse engineering, Hacking, Cryptography.
 
-- Biographies, Podcasts.
+- Books, Biographies, Podcasts, Newspaper.
 
-- Design, Photography.
+- Design, Photography, Architecture.
 
-- Hacking
+
 
 
 # Geography

@@ -139,7 +139,7 @@ const skills = [
   },
   {
     title: 'GPT-4',
-    competency: 4.5,
+    competency: 4,
     category: ['Tools', 'Web Development', 'Languages', 'AI'],
   },
   {
@@ -154,7 +154,7 @@ const skills = [
   },
   {
     title: 'Reverse Engineering',
-    competency: 3,
+    competency: 3.5,
     category: ['Standards'],
   },
   {

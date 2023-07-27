@@ -1,10 +1,20 @@
 // TODO Add a couple lines about each project
 const data = [
   {
-    title: 'Centralized Monitoring and Management Server',
-    subtitle: 'One of the most usefull suport tools',
+    title: 'Standard to High-Performance HMI SCADA Conversions',
+    subtitle: 'Updating outdated standard HMI for updated High-Performance designed SCADA HMIs',
     // link: 'https://',
-    image: '/images/projects/dashboard.png',
+    image: '/images/projects/HMI.gif',
+    date: '2023-02-12',
+    desc:
+      'Centralized control server to deploy updates and patches across other system devices. '
+      + 'Automoted monitoring, reporting and alerting.',
+  },
+  {
+    title: 'Centralized Monitoring and Management Server',
+    subtitle: 'One of the most usefull support tools',
+    // link: 'https://',
+    image: '/images/projects/gdash.gif',
     date: '2022-05-20',
     desc:
       'Centralized control server to deploy updates and patches across other system devices. '
@@ -17,7 +27,7 @@ const data = [
     image: '/images/projects/drone.gif',
     date: '2021-10-05',
     desc:
-      'Homebuild long-range (~10km) low altitude survaliance and delivery drone.  '
+      'Homebuild long-range (~10km) low altitude survaliance drone.  '
       + 'MATEK F405-TE, BN220 GPS, FR SKY l9r, 950kV motor',
   },
   {
@@ -27,7 +37,7 @@ const data = [
     date: '2020-12-10',
     desc:
       'R&D project using microcontrollers and external IO for intrusion detection, later expanded with human detection'
-      + ' and face identification for hybrid office attandece count',
+      + ' and face identification for on-site monitoring and logging',
   },
   {
     title: 'BMW k75 & K1100 cafe racer',

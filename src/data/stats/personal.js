@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ContactIcons from '../../components/Contact/ContactIcons';
 
-const { PUBLIC_URL } = process.env;
+// const { PUBLIC_URL } = process.env;
 
 const Age = () => {
   const [age, setAge] = useState();
@@ -25,12 +25,12 @@ const data = [
   {
     key: 'country',
     label: 'Citizen',
-    value: <img style={{ width: '90px' }} src={`${PUBLIC_URL}/images/FLAGS.png`} alt="" />,
+    value: '🇨🇦 🇵🇱',
   },
   {
     key: 'city',
-    label: 'City',
-    value: 'Calgary',
+    label: 'Location',
+    value: '📍 Calgary',
   },
   {
     key: 'age',

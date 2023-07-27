@@ -1,7 +1,7 @@
 const positions = [
   {
     company: 'Outlaw Automation Inc',
-    position: 'System Integration Engineer ⌨️',
+    position: 'SCADA / System Integration Engineer ⌨️',
     link: 'https://outlaw.ca',
     daterange: '2018 - Present',
     points: [
