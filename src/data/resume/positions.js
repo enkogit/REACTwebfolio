@@ -1,5 +1,20 @@
 const positions = [
   {
+    company: 'Insight-AWP Inc',
+    position: 'Data Engineer ⌨️',
+    link: 'https://insight-awp.com',
+    daterange: '2023 - Present',
+    points: [
+      'Identify clients’ strategic information requirements for data warehousing, analysis and reporting.',
+      'Implement a strategy to ensure data quality, integrity and security.',
+      'Manage connections with other Projects software in the Data Warehouse.',
+      'Drive ETL processes from multiple sources and analyze complex datasets.',
+      'Regularly recommend enhancements and stay informed about the industry trends.',
+      'Enhance data management and reporting capabilities using tools like SQL Server, Power Platform and Azure cloud services.',
+      'Collaborate with stakeholders, provide guidance to developers and present statistical information for internal and external use',
+    ],
+  },
+  {
     company: 'Outlaw Automation Inc',
     position: 'SCADA / System Integration Engineer ⌨️',
     link: 'https://outlaw.ca',
