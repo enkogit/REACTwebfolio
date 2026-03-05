@@ -13,9 +13,7 @@ const SideBar = () => (
     </section>
 
     <section className="blurb">
-      <p>Hi, I&apos;m Viktor. I am a <a href="https://www.ee.pw.edu.pl/en/">WUT</a> Electrical Engineering graduate. <br/>
-      ICS DATA & SCADA Information Integration Engineer.<br/>
-      AWP Information Management Consultant
+      <p>Hi, I&apos;m Viktor. I am a <a href="https://www.ee.pw.edu.pl/en/">WUT</a> Electrical Engineering graduate. <br />ICS DATA & SCADA Information Integration Engineer. <br />AWP Information Management Consultant
       </p>
       <Personal />
     </section>
