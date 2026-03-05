@@ -1,11 +1,11 @@
 
 # Intro
 
-Ever since I can remember, I've been fascinated by the power of electrical engineering—a field that combines innovation and precision to create the backbone of modern society. During my studies in electrical engineering, I was exposed to cutting-edge advancements in automation and communication, which sparked my interest in the endless possibilities these fields offer. From industrial control systems (ICS) and robotics to AI-enabled IoT, I was amazed by how these technologies are shaping our lives, enhancing efficiency, sustainability, and convenience. I also recognized that with the growing interconnectedness of our world comes the crucial need for robust cybersecurity. This realization led me to further explore the domain of safety, integrity, and reliability of our increasingly digital world. I am particularly interested in projects that involve these fields. If you believe I can be of help or would like to meet me, please don't hesitate to get in touch.
+Ever since I can remember, I've been fascinated by the power of engineering — a field that combines innovation and precision to create the backbone of modern society. During my studies in electrical engineering, I was exposed to cutting-edge advancements in automation and communication, which sparked my interest in the endless possibilities these fields offer. From industrial control systems, data systems and automation to AI-enabled IoT, I was amazed by how these technologies are shaping our lives, enhancing efficiency, sustainability, and convenience. I also recognized that with the growing interconnectedness of our world comes the crucial need for robust cybersecurity. This realization led me to further explore the domain of safety, data integrity, and reliability of our increasingly digital world. I am particularly interested in projects that involve these fields. If you believe I can be of help or would like to meet me, please don't hesitate to get in touch.
 
 # Currently
 
-Since 2018, I have been based in Calgary, where I've learned to build teams, manage people and projects, shape culture, develop relationships with customers, sell and support enterprise products, and create online models using cutting-edge technologies. My primary role is as a SCADA / systems integrator, but my experience extends across the stack.
+Since 2018, I have been based in Alberta and Texas, where I've learned to build teams, manage people and projects, shape culture, develop relationships with customers, sell and support products, and create online models using cutting-edge technologies. My primary role is as an Information Manager, but my experience extends across the stack.
 
 # Some history
 
@@ -31,7 +31,9 @@ Since 2018, I have been based in Calgary, where I've learned to build teams, man
 
 - In 2013, I enrolled in electrical engineering, where I had the opportunity to dive deep into the world of engineering: spinning electromagnetic fields, control systems, power generation, computer science, and more. I authored a scientific paper outlining guidelines for designing a self-sufficient renewable solar plant with days of autonomy. PEN tested various systems. Simulated a grid connected wind turbine with energy storge and also participated in international student exchange programs, where we learned how to design and develop maximum power point tracking (MPPT) inverters.
 
-- In 2018, I graduated with a Bachelor's degree and began my full-time career as a System Integration / SCADA Engineer at an automation company in Canada, where I gained hands-on experience at all stack levels.
+- In 2018, I graduated with a Bachelor's degree and began my full-time career as a Information Integration & SCADA Engineer at an automation company in Canada, where I gained hands-on experience at all stack levels.
+
+- Since 2022, I have dedicated my full-time focus to Information Management within Advanced Work Packaging (AWP), ensuring that project data, work package documentation, and supporting information flow seamlessly across Engineering, Procurement, and Construction teams in modern frameworks. In AWP, Information Management is a core pillar responsible for maintaining centralized, accurate, and accessible work packaging data, enabling the creation and execution of Engineering, Procurement, Construction, and Installation Work Packages in alignment with the Path of Construction. My work centers on strengthening this structured, data-driven framework to improve predictability, resource readiness, and overall project efficiency across the full project lifecycle
 
 Ask me in person for other stories that I'm hesitant to share with the internet.
 
@@ -52,9 +54,9 @@ Ask me in person for other stories that I'm hesitant to share with the internet.
 
 # Geography
 
-- I am originally from Suwalki - Poland and have since lived in Edmonton, Warsaw, Stockholm and currently living in Calgary with a deep sense of wanderlust to explore more of Canada.
+- I am originally from Suwalki - Poland and have since lived in Edmonton, Warsaw, Stockholm, Houston and currently living in Texas and the Canadian country side with a deep sense of wanderlust to explore more of U.S.A and Canada.
 
-- I've visited approximately 20 countries, some of which I've forgotten, and many of which I'd like to revisit. These include Canada, France, Austria, Germany, Italy, Greece, Romania, Bulgaria, Croatia, Bosnia and Herzegovina, Serbia, Montenegro, Sweden, Norway, Denmark, Netherlands and more.
+- I've visited approximately 20 countries, some of which I've forgotten, and many of which I'd like to revisit. These include Canada, USA, France, Austria, Germany, Italy, Greece, Romania, Bulgaria, Croatia, Bosnia and Herzegovina, Serbia, Montenegro, Sweden, Norway, Denmark, Netherlands and more.
 
 - Next on my bucket list: Vancouver Island, Yukon, Alaska, Hawaii, New Zealand, Iceland, and Chile.
 

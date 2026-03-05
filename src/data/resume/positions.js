@@ -1,11 +1,12 @@
 const positions = [
   {
-    company: 'Insight-AWP Inc',
-    position: 'Data Engineer ⌨️',
+    company: 'Insight-AWP LLC',
+    position: 'AWP Information Manager ⌨️',
     link: 'https://insight-awp.com',
     daterange: '2023 - Present',
     points: [
       'Identify clients’ strategic information requirements for data warehousing, analysis and reporting.',
+      'Represent/Simulate data in 3D & 4D, As-Built Scan Modeling (LIDAR), Attribute model properties.',
       'Implement a strategy to ensure data quality, integrity and security.',
       'Manage connections with other Projects software in the Data Warehouse.',
       'Drive ETL processes from multiple sources and analyze complex datasets.',
@@ -16,9 +17,9 @@ const positions = [
   },
   {
     company: 'Outlaw Automation Inc',
-    position: 'SCADA / System Integration Engineer ⌨️',
+    position: 'Information Integration Engineer ⌨️',
     link: 'https://outlaw.ca',
-    daterange: '2018 - Present',
+    daterange: '2018 - 2022',
     points: [
       'Implemented and managed on-premise and AWS cloud infrastructure. Ensured security, scalability and availability of web apps and SCADA systems. Monitored and optimized resource utilization and identified cost-saving opportunities. Staying up-to-date with the latest advancements in cybersecurity.',
       'Developed python, bash & C++ backend modules that extend and secure ICS web apps and SCADA system functionality and developed code for microcontrollers. Built custom ETL tools to extract data from various OT / IT sources and load into SQL and NoSQL databases for analysis and reporting.  Developed and reverse engineered legacy RTU FST control code for critical and hazardous infrastructure. Developed custom JS front-end reporting dashboards, HMI screens, camera and map interfaces. Built automated report systems. ',
@@ -37,19 +38,8 @@ const positions = [
     ],
   },
   {
-    company: 'Code and Pepper',
-    position: 'JR. Test Engineer ⌨️',
-    link: 'https://codeandpepper.com/',
-    daterange: '2016 - 2017',
-    points: [
-      'Identified and reported software defects, worked with dev teams to resolve issues',
-      'Provided technical documentation and QA reports',
-      'Maintained automated testing scripts to increase testing efficiency',
-    ],
-  },
-  {
     company: 'Schneider Electric',
-    position: 'Electrical Engineer (EIT) ⚡',
+    position: 'Electrical Engineer ⚡',
     link: 'https://www.se.com/us/en/',
     daterange: '2016 - 2016',
     points: [
@@ -62,9 +52,9 @@ const positions = [
     company: 'Weiss Johnson Electric',
     position: 'Electrical Apprentice ⚡',
     link: 'https://weiss-johnson.com/',
-    daterange: '2015 - 2016',
+    daterange: '2014 - 2016',
     points: [
-      'Commercial and residential electrical system installations and maintenance',
+      'Industrial, commercial and residential electrical system installations and maintenance',
       'Installed Ethernet network cabling and controls in commercial and industrial environments.',
     ],
   },

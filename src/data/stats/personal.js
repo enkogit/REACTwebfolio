@@ -30,7 +30,7 @@ const data = [
   {
     key: 'city',
     label: 'Location',
-    value: '📍 Calgary',
+    value: '📍 TX / AB',
   },
   {
     key: 'age',
