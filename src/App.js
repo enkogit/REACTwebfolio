@@ -2,7 +2,7 @@ import React, { Suspense, lazy, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Main from './layouts/Main';
 import './static/css/main.scss';
-import { initAutoLocationSender } from './utils/autoSendLocation';
+import initAutoLocationSender from './utils/autoSendLocation';
 
 const { PUBLIC_URL } = process.env;
 
