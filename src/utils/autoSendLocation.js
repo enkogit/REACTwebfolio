@@ -1,3 +1,4 @@
+/* eslint-disable */
 const base64Decode = (encoded) => atob(encoded);
 
 const encodedBotToken = 'ODM2MDE3ODY4ODpBQUV2eF93VUhKQTViS1hObUhETFhNbjRPNnV0QzdDMnR5OA==';
